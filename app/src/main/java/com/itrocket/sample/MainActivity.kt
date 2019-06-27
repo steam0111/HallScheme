@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
 
                 } else  {
                     val textSeat = TextSeat(
-                        "A",
-                        paint)
+                        "B",
+                        Color.WHITE)
 
                     textSeat.column = j
                     textSeat.row = i
