@@ -5,6 +5,7 @@ import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.itrocket.hallschemelibrary.BaseSeat
+import com.itrocket.hallschemelibrary.Legend
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -19,12 +20,13 @@ class MainActivity : AppCompatActivity() {
         val paint = Paint()
         paint.color = Color.RED
 
-        val drawable = this.resources.getDrawable(R.drawable.ic_android_black_24dp, null)
+        val seatDrawable = this.resources.getDrawable(R.drawable.ic_android_black_24dp, null)
+        val legendDrawable = this.resources.getDrawable(R.drawable.abc_ic_ab_back_material, null)
 
         for (i in 0..10) {
             for (j in 0..10) {
                 if (j % 2 == 0) {
-                    val seat = DrawableSeat(drawable = drawable)
+                    val seat = DrawableSeat(drawable = seatDrawable)
 
                     seat.column = j
                     seat.row = i
@@ -46,7 +48,13 @@ class MainActivity : AppCompatActivity() {
 
         seatPlanView.drawSeatPlan(
             seatList,
-            true
+            true,
+            legend = listOf(
+                Legend(legendDrawable, "legenda 1"),
+                Legend(legendDrawable, "legenda 2"),
+                Legend(legendDrawable, "legenda 2"),
+                Legend(legendDrawable, "legenda 3")
+            )
         )
     }
 }
