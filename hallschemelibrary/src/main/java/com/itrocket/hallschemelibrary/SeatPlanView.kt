@@ -37,7 +37,7 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
         //calculate legend width, height
         val legendWidth : Int = legend?.sumBy {
             textPaint.getTextBounds(it.text, 0, it.text.length, textBounds)
-            SEAT_WIDTH + textBounds.width() + SEAT_GAP
+            SEAT_WIDTH + textBounds.width() + SEAT_GAP*2
         } ?: 0
 
         Log.d("SV", legendWidth.toString())
@@ -161,7 +161,7 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
 
                 val textWidth = (item.text.length * legendTextSize)
 
-                marginFromLeft += iconWidth
+                marginFromLeft += (iconWidth)
 
                 val cx = marginFromLeft + (textWidth/2) + offsetFromLeftSide
 
@@ -173,7 +173,7 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
                     rightBottomY/2f,
                     textSize = legendTextSize)
 
-                marginFromLeft += textWidth/2
+                marginFromLeft += (textWidth/2 + SEAT_GAP*2)
                 legendWidth = cx
         }
 

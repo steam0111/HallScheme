@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         val legendDrawable = this.resources.getDrawable(R.drawable.abc_ic_ab_back_material, null)
 
         for (i in 0..10) {
-            for (j in 0..10) {
+            for (j in 0..20) {
                 if (j % 2 == 0) {
                     val seat = DrawableSeat(drawable = seatDrawable)
 
