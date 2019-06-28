@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                         seat.status = seat.status.getRevertedStatus()
                         true
                     }
-                    
+
                     else -> false
                 }
             }
