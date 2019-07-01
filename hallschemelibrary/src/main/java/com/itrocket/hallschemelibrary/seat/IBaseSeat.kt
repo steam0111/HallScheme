@@ -7,5 +7,5 @@ interface IBaseSeat {
     fun drawSeat(canvas: Canvas,
                  pointLeftTop : Point,
                  pointRightBottom : Point,
-                 status: Status)
+                 seatStatus: SeatStatus)
 }

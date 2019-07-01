@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
 import com.itrocket.hallschemelibrary.seat.BaseSeat
-import com.itrocket.hallschemelibrary.seat.Status
+import com.itrocket.hallschemelibrary.seat.SeatStatus
 import com.itrocket.hallschemelibrary.seat.isClickable
 import kotlin.math.max
 
@@ -21,7 +21,6 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
     private var offsetForCenteredSeatPlan = 0
     private var bitmapWidth : Int = 0
 
-
     /**
      *  @param BaseSeat - clickable item that was clicked
      *  @param List<BaseSeat> - already clicked seats
@@ -30,6 +29,9 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
     private var clickedRuleForClickableItems : (BaseSeat, List<BaseSeat>) -> Boolean = {seat, seats ->
         false
     }
+
+    fun getClickedSeats() : List<BaseSeat>
+            = seats.filter { it.seatStatus == SeatStatus.CLICKED }
 
     fun drawSeatPlan(
         seats : List<BaseSeat>,
@@ -149,7 +151,7 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
                 tempCanvas,
                 pointLeftTop,
                 pointRightBottom,
-                it.status
+                it.seatStatus
             )
         }
 
@@ -224,13 +226,13 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
 
     private fun isClickSeat(row : Int, column : Int, seats: List<BaseSeat>) : BaseSeat?  {
         return seats
-            .filter { it.status.isClickable() }
+            .filter { it.seatStatus.isClickable() }
             .find { it.row == row && it.column == column }
     }
 
     private fun getClickedSeats(seats: List<BaseSeat>) : List<BaseSeat> {
         return seats
-            .filter { it.status == Status.CLICKED }
+            .filter { it.seatStatus == SeatStatus.CLICKED }
     }
 
     private fun clickScheme(point: Point) {
