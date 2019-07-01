@@ -54,7 +54,7 @@ public class ZoomableImageView extends AppCompatImageView {
     private int onMeasure = 0;
 
     private ImageClickListener listener;
-    private boolean zoomByDoubleTap;
+    private boolean isZoomable;
     private int countZoomsByDoubleTap;
 
 
@@ -64,7 +64,7 @@ public class ZoomableImageView extends AppCompatImageView {
         super(context, attr);
         TypedArray a = context.getTheme().obtainStyledAttributes(attr, R.styleable.ZoomableImageView, 0, 0);
         try {
-            zoomByDoubleTap = a.getBoolean(R.styleable.ZoomableImageView_doubleTap, true);
+            isZoomable = a.getBoolean(R.styleable.ZoomableImageView_doubleTap, true);
         } finally {
             a.recycle();
         }
@@ -187,14 +187,14 @@ public class ZoomableImageView extends AppCompatImageView {
         this.listener = listener;
     }
 
-    public void setZoomByDoubleTap(boolean zoomByDoubleTap) {
-        this.zoomByDoubleTap = zoomByDoubleTap;
+    public void setZoomable(boolean zoomable) {
+        this.isZoomable = zoomable;
     }
 
     class ReSetDoubleTapTask extends TimerTask {
         @Override
         public void run() {
-            setZoomByDoubleTap(true);
+            setZoomable(true);
         }
     }
 
@@ -253,7 +253,9 @@ public class ZoomableImageView extends AppCompatImageView {
 
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            scale(detector.getScaleFactor(), detector.getFocusX(), detector.getFocusY());
+            if (isZoomable) {
+                scale(detector.getScaleFactor(), detector.getFocusX(), detector.getFocusY());
+            }
             return true;
         }
     }
@@ -333,7 +335,7 @@ public class ZoomableImageView extends AppCompatImageView {
 
             boolean isZoomAvailable = diffTime >= MIN_DELAY_BETWEEN_DOUBLE_TAP && diffTime <= MAX_DELAY_BETWEEN_DOUBLE_TAP;
 
-            if (zoomByDoubleTap && countZoomsByDoubleTap == 0 && saveScale == 1f && isZoomAvailable) {
+            if (isZoomable && countZoomsByDoubleTap == 0 && saveScale == 1f && isZoomAvailable) {
                 zoom(true);
                 countZoomsByDoubleTap++;
             } else if (isZoomAvailable) {

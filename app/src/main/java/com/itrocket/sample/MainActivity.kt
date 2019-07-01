@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         seatPlanView.drawSeatPlan(
             seatList,
-            true,
+            false,
             legend = listOf(
                 Legend(legendDrawable, "legenda 1"),
                 Legend(legendDrawable, "legenda 2"),
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             isDrawScreen = false,
             clickedRuleForClickableItems = { seat, seats ->
                 when {
-                    //if we click not near seat with space left or right
+                    //if we click not near seat with left or right space
                     !seats.isSeatNearWithOthers(seat) -> {
                         seat.status = seat.status.getRevertedStatus()
                         seats.revertClickedStatuses()

@@ -4,11 +4,9 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import androidx.annotation.ColorInt
 import com.itrocket.hallschemelibrary.seat.BaseSeat
 import com.itrocket.hallschemelibrary.seat.Status
-import com.itrocket.hallschemelibrary.seat.getRevertedStatus
 import com.itrocket.hallschemelibrary.seat.isClickable
 import kotlin.math.max
 
@@ -43,9 +41,10 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
         }
     ) {
         if (seats.isNotEmpty()) {
+            super.setZoomable(enableZoom)
+
             this.clickedRuleForClickableItems = clickedRuleForClickableItems
             this.isDrawScreen = isDrawScreen
-            super.setZoomByDoubleTap(enableZoom)
             this.seats = seats
             this.legend = legend
             maxCountSeatsInHeight = seats.maxBy { it.row }?.row ?: 0
