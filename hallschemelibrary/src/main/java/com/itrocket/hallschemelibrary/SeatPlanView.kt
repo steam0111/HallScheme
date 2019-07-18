@@ -5,6 +5,7 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
+import com.itrocket.hallschemelibrary.legend.Legend
 import com.itrocket.hallschemelibrary.seat.BaseSeat
 import com.itrocket.hallschemelibrary.seat.SeatStatus
 import com.itrocket.hallschemelibrary.seat.isClickable
@@ -192,7 +193,7 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
 
                 drawDrawable(
                     canvas,
-                    item.drawableIcon,
+                    this.resources.getDrawable(item.drawableResId, null),
                     pointLeftTop,
                     pointRightBottom)
 

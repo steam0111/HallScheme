@@ -5,7 +5,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.itrocket.hallschemelibrary.Legend
+import com.itrocket.hallschemelibrary.legend.Legend
 import com.itrocket.hallschemelibrary.seat.BaseSeat
 import com.itrocket.hallschemelibrary.seat.SeatStatus
 import com.itrocket.hallschemelibrary.seat.getRevertedStatus
@@ -24,8 +24,6 @@ class MainActivity : AppCompatActivity() {
         val paint = Paint()
         paint.color = Color.RED
 
-        val legendDrawable = this.resources.getDrawable(R.drawable.abc_ic_ab_back_material, null)
-
         for (i in 0..4) {
             for (j in 0..15) {
                 if (j % 4 == 0) {
@@ -40,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
                     seatList.add(textSeat)
 
-                } else  {
+                } else {
 
                     val seat = DrawableClickableSeat(
                         R.drawable.ic_android_red_24dp,
@@ -64,10 +62,10 @@ class MainActivity : AppCompatActivity() {
             seatList,
             true,
             legend = listOf(
-                Legend(legendDrawable, "legenda 1"),
-                Legend(legendDrawable, "legenda 2"),
-                Legend(legendDrawable, "legenda 2"),
-                Legend(legendDrawable, "legenda 3")
+                Legend("legenda 1", R.drawable.ic_android_black_24dp),
+                Legend("legenda 2", R.drawable.ic_android_red_24dp),
+                Legend("legenda 3", R.drawable.ic_android_black_24dp),
+                Legend("legenda 4", R.drawable.ic_android_red_24dp)
             ),
             clickedRuleForClickableItems = { seat, seats ->
 
@@ -107,10 +105,10 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun List<BaseSeat>.isSeatNearWithOthers(seat : BaseSeat) : Boolean =
+    private fun List<BaseSeat>.isSeatNearWithOthers(seat: BaseSeat): Boolean =
         this.find { seat.column + 1 == it.column || seat.column - 1 == it.column } != null
 
-    private fun List<BaseSeat>.revertClickedStatuses(){
+    private fun List<BaseSeat>.revertClickedStatuses() {
         this.map { it.seatStatus = SeatStatus.NOT_CLICKED }
     }
 }
