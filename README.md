@@ -1,4 +1,4 @@
-# HallScheme
+# Library for draw hallScheme
 
 [![](https://jitpack.io/v/steam0111/HallScheme.svg)](https://jitpack.io/#steam0111/HallScheme)
 
