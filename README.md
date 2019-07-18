@@ -8,3 +8,8 @@ dependencies {
     implementation 'com.github.steam0111:HallScheme:0.1.0'
 }
 ```
+Example of use : 
+
+https://github.com/steam0111/HallScheme/tree/master/app
+
+<img src = "https://github.com/steam0111/HallScheme/blob/master/screenshot1.png" width = "320"/>
