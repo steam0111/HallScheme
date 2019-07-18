@@ -9,6 +9,8 @@ import com.itrocket.hallschemelibrary.Legend
 import com.itrocket.hallschemelibrary.seat.BaseSeat
 import com.itrocket.hallschemelibrary.seat.SeatStatus
 import com.itrocket.hallschemelibrary.seat.getRevertedStatus
+import com.itrocket.sample.seats.DrawableClickableSeat
+import com.itrocket.sample.seats.TextSeat
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -22,8 +24,6 @@ class MainActivity : AppCompatActivity() {
         val paint = Paint()
         paint.color = Color.RED
 
-        val seatDrawable = this.resources.getDrawable(R.drawable.ic_android_black_24dp, null)
-        val seatDrawableOn = this.resources.getDrawable(R.drawable.ic_android_red_24dp, null)
         val legendDrawable = this.resources.getDrawable(R.drawable.abc_ic_ab_back_material, null)
 
         for (i in 0..4) {
@@ -31,7 +31,8 @@ class MainActivity : AppCompatActivity() {
                 if (j % 4 == 0) {
                     val textSeat = TextSeat(
                         "B",
-                        Color.WHITE)
+                        Color.WHITE
+                    )
 
                     textSeat.column = j
                     textSeat.row = i
@@ -42,8 +43,9 @@ class MainActivity : AppCompatActivity() {
                 } else  {
 
                     val seat = DrawableClickableSeat(
-                        drawable = seatDrawable,
-                        drawableOn = seatDrawableOn)
+                        R.drawable.ic_android_red_24dp,
+                        R.drawable.ic_android_black_24dp
+                    )
 
                     seat.column = j
                     seat.row = i
@@ -60,14 +62,13 @@ class MainActivity : AppCompatActivity() {
 
         seatPlanView.drawSeatPlan(
             seatList,
-            false,
+            true,
             legend = listOf(
                 Legend(legendDrawable, "legenda 1"),
                 Legend(legendDrawable, "legenda 2"),
                 Legend(legendDrawable, "legenda 2"),
                 Legend(legendDrawable, "legenda 3")
             ),
-            isDrawScreen = false,
             clickedRuleForClickableItems = { seat, seats ->
 
                 when {
@@ -96,7 +97,6 @@ class MainActivity : AppCompatActivity() {
                         seat.seatStatus = seat.seatStatus.getRevertedStatus()
                         true
                     }
-
 
                     else -> {
                         false

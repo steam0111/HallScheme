@@ -16,7 +16,6 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
     private var legend : List<Legend>? = null
     private var maxCountSeatsInHeight = 0
     private var maxCountSeatsInWidth = 0
-    private var isDrawScreen = true
     private var legendHeight = 0
     private var offsetForCenteredSeatPlan = 0
     private var bitmapWidth : Int = 0
@@ -37,7 +36,6 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
         seats : List<BaseSeat>,
         enableZoom : Boolean,
         legend : List<Legend>? = null,
-        isDrawScreen : Boolean,
         clickedRuleForClickableItems : (BaseSeat, List<BaseSeat>) -> Boolean = {seat, seats ->
             false
         }
@@ -46,7 +44,6 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
             super.setZoomable(enableZoom)
 
             this.clickedRuleForClickableItems = clickedRuleForClickableItems
-            this.isDrawScreen = isDrawScreen
             this.seats = seats
             this.legend = legend
             maxCountSeatsInHeight = seats.maxBy { it.row }?.row ?: 0
@@ -151,7 +148,8 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
                 tempCanvas,
                 pointLeftTop,
                 pointRightBottom,
-                it.seatStatus
+                it.seatStatus,
+                this
             )
         }
 
