@@ -7,7 +7,10 @@ import com.itrocket.hallschemelibrary.SeatPlanView
 import com.itrocket.hallschemelibrary.seat.BaseSeat
 import com.itrocket.hallschemelibrary.seat.SeatStatus
 
-class TextSeat(var text : String, @ColorInt val color : Int) : BaseSeat() {
+class TextSeat(
+    var text : String,
+    @ColorInt val color : Int
+) : BaseSeat() {
     override fun drawSeat(canvas: Canvas,
                           pointLeftTop: Point,
                           pointRightBottom: Point,

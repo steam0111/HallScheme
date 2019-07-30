@@ -1,7 +1,6 @@
 package com.itrocket.sample
 
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,10 +18,64 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val seatList = mutableListOf<BaseSeat>()
+        btnGetClickedCount.setOnClickListener {
+            Toast.makeText(this, seatPlanView.getClickedSeats().size.toString(), Toast.LENGTH_SHORT).show()
+        }
 
-        val paint = Paint()
-        paint.color = Color.RED
+        seatPlanView.drawSeatPlan(
+            getSeatData(), // make data for seat
+            true, //define zoomable or not
+            getLegendData(), //make data for legend
+            clickedRuleForClickableItems = { seat, seats ->
+                seatValidationRules(seat, seats) //set validation rules for click on seats
+            }
+        )
+    }
+
+    private fun seatValidationRules(seat: BaseSeat, seats: List<BaseSeat>): Boolean = when {
+        //if we click not near seat with left or right space
+        !seats.isSeatNearWithOthers(seat) -> {
+            seat.seatStatus = seat.seatStatus.getRevertedStatus()
+            seats.revertClickedStatuses()
+            true
+        }
+
+        //if we clicked not the same row like other
+        seats.isNotEmpty() && seat.row != seats.first().row -> {
+            seat.seatStatus = seat.seatStatus.getRevertedStatus()
+            seats.revertClickedStatuses()
+            true
+        }
+
+        //if clicked already clicked seat
+        seats.contains(seat) -> {
+            seat.seatStatus = seat.seatStatus.getRevertedStatus()
+            true
+        }
+
+        //can't click more than 8 seats
+        seats.size < 8 -> {
+            seat.seatStatus = seat.seatStatus.getRevertedStatus()
+            true
+        }
+
+        else -> {
+            false
+        }
+    }
+
+    private fun getLegendData(): List<Legend> {
+        return listOf(
+            Legend("legenda 1", R.drawable.ic_android_black_24dp),
+            Legend("legenda 2", R.drawable.ic_android_red_24dp),
+            Legend("legenda 3", R.drawable.ic_android_black_24dp),
+            Legend("legenda 4", R.drawable.ic_android_red_24dp)
+        )
+    }
+
+    private fun getSeatData(): List<BaseSeat> {
+
+        val seatList = mutableListOf<BaseSeat>()
 
         for (i in 0..4) {
             for (j in 0..15) {
@@ -54,55 +107,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        btnGetClickedCount.setOnClickListener {
-            Toast.makeText(this, seatPlanView.getClickedSeats().size.toString(), Toast.LENGTH_SHORT).show()
-        }
-
-        seatPlanView.drawSeatPlan(
-            seatList,
-            true,
-            legend = listOf(
-                Legend("legenda 1", R.drawable.ic_android_black_24dp),
-                Legend("legenda 2", R.drawable.ic_android_red_24dp),
-                Legend("legenda 3", R.drawable.ic_android_black_24dp),
-                Legend("legenda 4", R.drawable.ic_android_red_24dp)
-            ),
-            clickedRuleForClickableItems = { seat, seats ->
-
-                when {
-                    //if we click not near seat with left or right space
-                    !seats.isSeatNearWithOthers(seat) -> {
-                        seat.seatStatus = seat.seatStatus.getRevertedStatus()
-                        seats.revertClickedStatuses()
-                        true
-                    }
-
-                    //if we clicked not the same row like other
-                    seats.isNotEmpty() && seat.row != seats.first().row -> {
-                        seat.seatStatus = seat.seatStatus.getRevertedStatus()
-                        seats.revertClickedStatuses()
-                        true
-                    }
-
-                    //if clicked already clicked seat
-                    seats.contains(seat) -> {
-                        seat.seatStatus = seat.seatStatus.getRevertedStatus()
-                        true
-                    }
-
-                    //can't click more than 8 seats
-                    seats.size < 8 -> {
-                        seat.seatStatus = seat.seatStatus.getRevertedStatus()
-                        true
-                    }
-
-                    else -> {
-                        false
-                    }
-                }
-
-            }
-        )
+        return seatList
     }
 
     private fun List<BaseSeat>.isSeatNearWithOthers(seat: BaseSeat): Boolean =
