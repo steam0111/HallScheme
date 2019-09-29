@@ -94,14 +94,15 @@ class MainActivity : AppCompatActivity() {
         
         // call drawSeatPlan
         // full code in repo
-        seatPlanView.drawSeatPlan(
+         seatPlanView.drawSeatPlan(
             getSeatData(), // make data for seat
             true, //define zoomable or not
             getLegendData(), //make data for legend
             clickedRuleForClickableItems = { seat, seats ->
                 seatValidationRules(seat, seats) //set validation rules for click on seats
             },
-            seatGap = 1 //seat gap between chairs
+            seatGap = 1, //seat gap between chairs
+            screen = Screen(Color.RED, Color.BLUE, 30f, "Screen") //add screen
         )
     }
 }
