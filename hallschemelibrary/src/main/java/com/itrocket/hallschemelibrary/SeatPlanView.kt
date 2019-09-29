@@ -321,7 +321,7 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
 
 
         private val textBounds: Rect by lazy { Rect() }
-        private val textPaint: Paint by lazy {
+        val textPaint: Paint by lazy {
             val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
             textPaint.style = Paint.Style.FILL_AND_STROKE
             textPaint.textSize = TEXT_SIZE
