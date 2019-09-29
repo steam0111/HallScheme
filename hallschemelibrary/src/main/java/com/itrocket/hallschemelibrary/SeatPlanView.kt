@@ -6,10 +6,12 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
 import com.itrocket.hallschemelibrary.legend.Legend
+import com.itrocket.hallschemelibrary.screen.Screen
 import com.itrocket.hallschemelibrary.seat.BaseSeat
 import com.itrocket.hallschemelibrary.seat.SeatStatus
 import com.itrocket.hallschemelibrary.seat.isClickable
 import kotlin.math.max
+
 
 class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(context, attrs) {
 
@@ -21,6 +23,15 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
     private var offsetForCenteredSeatPlan = 0
     private var bitmapWidth: Int = 0
     private var seatGap = 6
+    private var screenHeightFactorInSeatSize = 2 //screen height in chair height
+    private var isHaveScreen = false
+    private var screen: Screen? = null
+    private val screenPaint: Paint by lazy {
+        val linePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+        linePaint.style = Paint.Style.FILL
+        linePaint.color = Color.RED
+        return@lazy linePaint
+    }
 
     /**
      *  @param BaseSeat - clickable item that was clicked
@@ -41,9 +52,13 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
         clickedRuleForClickableItems: (BaseSeat, List<BaseSeat>) -> Boolean = { seat, seats ->
             false
         },
-        seatGap: Int = this.seatGap
+        seatGap: Int = this.seatGap,
+        screen: Screen? = null
     ) {
+
         this.seatGap = seatGap
+        this.screen = screen
+
         if (seats.isNotEmpty()) {
             super.setZoomable(enableZoom)
 
@@ -91,8 +106,18 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
         //only seat matrix width
         val matrixWidth = maxCountSeatsInWidth * SEAT_WIDTH + SEAT_WIDTH + widthSeatGapOffset
 
+        //if we have screen we calculate additional height with space
+        val screenHeightWithSpace = if (screen != null) {
+            (SEAT_WIDTH * screenHeightFactorInSeatSize) + SEAT_WIDTH
+        } else {
+            0
+        }
+
         val bitmapHeight =
-            maxCountSeatsInHeight * SEAT_WIDTH + SEAT_WIDTH + heightSeatGapOffset + legendHeight
+            maxCountSeatsInHeight * SEAT_WIDTH + SEAT_WIDTH +
+                    heightSeatGapOffset +
+                    legendHeight +
+                    screenHeightWithSpace
 
         //choose btw matrixWidth and legendWidth
         bitmapWidth = max(matrixWidth, legendWidth)
@@ -161,7 +186,33 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
             )
         }
 
+        screen?.let {
+            drawScreen(
+                tempCanvas, it, Rect(
+                    0, tempBitmap.height - screenHeightWithSpace + SEAT_WIDTH,
+                    tempBitmap.width, tempBitmap.height
+                ),
+                (tempBitmap.width / 2).toFloat(),
+                (tempBitmap.height - (screenHeightWithSpace + SEAT_WIDTH) / 4).toFloat()
+            )
+        }
+
         return tempBitmap
+    }
+
+    private fun drawScreen(
+        canvas: Canvas,
+        screen: Screen,
+        rect: Rect,
+        textCx: Float,
+        textCy: Float
+    ) {
+        screenPaint.color = screen.backgroundColorInt
+        canvas.drawRect(rect, screenPaint)
+        textPaint.textSize = screen.textSize
+        textPaint.color = screen.textColorInt
+        val yPos = (textCy - (textPaint.descent() + textPaint.ascent()) / 2)
+        canvas.drawText(screen.text, textCx, yPos, textPaint)
     }
 
     /**
@@ -192,13 +243,12 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
             var rightBottomX = marginFromLeft.toInt() + iconWidth
 
             val leftTopY = 0
-            val rightBottomY = iconWidth
 
             leftTopX += offsetFromLeftSide
             rightBottomX += offsetFromLeftSide
 
             val pointLeftTop = Point(leftTopX, leftTopY)
-            val pointRightBottom = Point(rightBottomX, rightBottomY)
+            val pointRightBottom = Point(rightBottomX, iconWidth)
 
             drawDrawable(
                 canvas,
@@ -218,7 +268,7 @@ class SeatPlanView(context: Context, attrs: AttributeSet?) : ZoomableImageView(c
                 canvas,
                 colorText,
                 cx,
-                rightBottomY / 2f,
+                iconWidth / 2f,
                 textSize = legendTextSize
             )
 

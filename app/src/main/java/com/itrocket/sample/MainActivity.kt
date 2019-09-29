@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.itrocket.hallschemelibrary.legend.Legend
+import com.itrocket.hallschemelibrary.screen.Screen
 import com.itrocket.hallschemelibrary.seat.BaseSeat
 import com.itrocket.hallschemelibrary.seat.SeatStatus
 import com.itrocket.hallschemelibrary.seat.getRevertedStatus
@@ -30,7 +31,8 @@ class MainActivity : AppCompatActivity() {
             clickedRuleForClickableItems = { seat, seats ->
                 seatValidationRules(seat, seats) //set validation rules for click on seats
             },
-            seatGap = 1 //seat gap between chairs
+            seatGap = 1, //seat gap between chairs
+            screen = Screen(Color.RED, Color.BLUE, 30f, "Screen")
         )
     }
 
