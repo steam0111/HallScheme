@@ -19,7 +19,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btnGetClickedCount.setOnClickListener {
-            Toast.makeText(this, seatPlanView.getClickedSeats().size.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, seatPlanView.getClickedSeats().size.toString(), Toast.LENGTH_SHORT)
+                .show()
         }
 
         seatPlanView.drawSeatPlan(
@@ -28,7 +29,8 @@ class MainActivity : AppCompatActivity() {
             getLegendData(), //make data for legend
             clickedRuleForClickableItems = { seat, seats ->
                 seatValidationRules(seat, seats) //set validation rules for click on seats
-            }
+            },
+            seatGap = 1 //seat gap between chairs
         )
     }
 
