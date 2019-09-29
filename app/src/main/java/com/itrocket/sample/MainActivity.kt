@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 seatValidationRules(seat, seats) //set validation rules for click on seats
             },
             seatGap = 1, //seat gap between chairs
-            screen = Screen(Color.RED, Color.BLUE, 30f, "Screen")
+            screen = Screen(Color.RED, Color.BLUE, 30f, "Screen") //add screen
         )
     }
 
