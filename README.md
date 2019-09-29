@@ -100,7 +100,8 @@ class MainActivity : AppCompatActivity() {
             getLegendData(), //make data for legend
             clickedRuleForClickableItems = { seat, seats ->
                 seatValidationRules(seat, seats) //set validation rules for click on seats
-            }
+            },
+            seatGap = 1 //seat gap between chairs
         )
     }
 }
